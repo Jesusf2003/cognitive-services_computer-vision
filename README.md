@@ -1,1 +1,1 @@
-# cognitive-services_computer-vision
+# Servicios Cognitivos - Computer Vision (Azure)
