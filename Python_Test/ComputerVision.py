@@ -1,38 +1,20 @@
-# Importaciones
-from array import *
+import io
+import json
+from unittest import result
+from msrest.authentication import *
 from azure.cognitiveservices.vision.computervision import *
 from azure.cognitiveservices.vision.computervision.models import *
-from msrest.authentication import *
-from PIL import *
-import os, sys, time
+import requests
+from PIL import Image, ImageFont
 
-from pyparsing import ParseSyntaxException
+credential = json.load(open('Credential.json'))
 
-# Autenticación
-subscription_key = ""
-end_point = ""
+API_KEY = credential['API_KEY']
+ENDPOINT = credential['ENDPOINT']
+SUBS_KEY = credential['SUBS_KEY']
 
-# Iniciando cliente de computer vision
-computer_vision_client = ComputerVisionClient(end_point, CognitiveServicesCredentials(subscription_key))
+cv_client = ComputerVisionClient(ENDPOINT, CognitiveServicesCredentials(API_KEY))
 
-# Definien do imagen desde archivos
-images_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "images")
-
-# Definiendo imagen desde enlace
-url_remote = "URL"
-
-# Obtener etiquetas
-tags_result_remote = computer_vision_client.tag_image(url_remote)
-
-# Validar obtención de etiquetas
-if (len(tags_result_remote.tags) == 0):
-
-    print("No hay etiquetas detectadas")
-
-else:
-
-    for tag in tags_result_remote.tags:
-
-        print("'{}' with confidence {:.2f}%".format(tag.name, tag.confidence * 100))
-
-print("Termina la prueba de Computer Vision")
+domain = 'zorro'
+image_url = 'https://docs.microsoft.com/en-us/azure/synapse-analytics/machine-learning/media/tutorial-computer-vision-use-mmlspark/dog.jpg'
+anaylisis = cv_client.analyze_image_by_domain(model=domain, url=image_url)
